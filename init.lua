@@ -102,7 +102,7 @@ vim.g.have_nerd_font = false
 vim.o.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.o.relativenumber = true
+vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.o.mouse = 'a'
@@ -357,6 +357,13 @@ require('lazy').setup({
   -- you do for a plugin at the top level, you can do for a dependency.
   --
   -- Use the `dependencies` key to specify the dependencies of a particular plugin
+  {
+    'matthewmturner/rfsee',
+    opts = {},
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+    },
+  },
 
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
@@ -379,7 +386,7 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+      { 'nvim-tree/nvim-web-devicons', enabled = true },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -826,7 +833,6 @@ require('lazy').setup({
         -- you will need to read `:help ins-completion`
         --
         -- No, but seriously. Please read `:help ins-completion`, it is really good!
-        --
         -- All presets have the following mappings:
         -- <tab>/<s-tab>: move to right/left of your snippet expansion
         -- <c-space>: Open menu or open docs if already open
