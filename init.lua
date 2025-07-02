@@ -622,6 +622,26 @@ require('lazy').setup({
             map('<leader>th', function()
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
             end, '[T]oggle Inlay [H]ints')
+            local show_warning_virtual_text = true
+
+            local function toggle_warning_virtual_text()
+              show_warning_virtual_text = not show_warning_virtual_text
+              if show_warning_virtual_text then
+                vim.diagnostic.config {
+                  virtual_text = {
+                    source = 'if_many',
+                    spacing = 2,
+                    severity = { min = vim.diagnostic.severity.WARN },
+                  },
+                }
+                print 'LSP warning virtual text: ON'
+              else
+                vim.diagnostic.config { virtual_text = false }
+                print 'LSP warning virtual text: OFF'
+              end
+            end
+
+            map('<leader>tw', toggle_warning_virtual_text, '[T]oggle Warning Virtual Text')
           end
         end,
       })
@@ -722,6 +742,7 @@ require('lazy').setup({
       require('mason-lspconfig').setup {
         ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
         automatic_installation = false,
+        automatic_enable = true,
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
