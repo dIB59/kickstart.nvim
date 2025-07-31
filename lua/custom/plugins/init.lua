@@ -42,6 +42,28 @@ return {
           :find()
       end
 
+      local current_index = 1
+
+      local function goto_next_file()
+        local list = harpoon:list()
+        local total = #list.items
+        if total == 0 then
+          return
+        end
+        current_index = (current_index % total) + 1
+        list:select(current_index)
+      end
+
+      local function goto_prev_file()
+        local list = harpoon:list()
+        local total = #list.items
+        if total == 0 then
+          return
+        end
+        current_index = (current_index - 2 + total) % total + 1
+        list:select(current_index)
+      end
+
       local map = function(keys, func, desc)
         vim.keymap.set('n', keys, func, { desc = 'Harpoon: ' .. desc })
       end
@@ -49,6 +71,12 @@ return {
       vim.keymap.set('n', '<C-e>', function()
         toggle_telescope(harpoon:list())
       end, { desc = 'Open harpoon window' })
+
+      -- Next buffer with <leader><Tab>
+      vim.keymap.set('n', '<leader><Tab>', goto_next_file, { desc = 'Next buffer' })
+
+      -- Previous buffer with <leader><S-Tab> (Shift+Tab)
+      vim.keymap.set('n', '<leader><S-Tab>', goto_prev_file, { desc = 'Previous buffer' })
 
       map('<leader>ha', function()
         harpoon:list():add()
