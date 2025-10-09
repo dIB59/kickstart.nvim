@@ -37,6 +37,7 @@ local function has_asm_lsp()
 end
 
 -- Setup ASM LSP
+
 local function setup_asm_lsp(preset)
   local config = asm_targets[preset]
   if not config then
@@ -67,22 +68,13 @@ local function setup_asm_lsp(preset)
       ['asm-lsp'] = {
         assembler = config.assembler,
         compiler = config.compiler,
-        syntax = config.syntax, -- <- added syntax for GAS/NASM
+        syntax = config.syntax,
       },
     },
   }
 
-  -- Register server with lspconfig
-  lspconfig.asm_lsp = {
-    default_config = asm_lsp_config,
-  }
-
-  -- Start LSP for current ASM buffer
-  local bufnr = vim.api.nvim_get_current_buf()
-  local ft = vim.bo[bufnr].filetype
-  if ft == 'asm' or ft == 's' or ft == 'S' then
-    vim.lsp.start { name = 'asm_lsp' }
-  end
+  -- Correct way: setup LSP
+  lspconfig['asm_lsp'].setup(asm_lsp_config)
 
   vim.notify('ASM target switched to: ' .. preset, vim.log.levels.INFO)
 end
@@ -116,3 +108,5 @@ vim.api.nvim_create_autocmd('FileType', {
 
 -- Optional: automatically attach Pico target on startup
 setup_asm_lsp 'pico'
+
+return {}
