@@ -134,6 +134,20 @@ return {
       map('<leader>e', '<cmd>Oil<CR>', 'Open Oil (file explorer)')
     end,
   },
+
+  --- RFC View Plugin ---
+
+  {
+    'moniquelive/rfc.nvim',
+    dependencies = {
+      'nvim-telescope/telescope.nvim',
+    },
+    config = function()
+      require('telescope').load_extension 'rfc'
+
+      map('<leader>r', ':Telescope rfc<CR>', 'Open RFC')
+    end,
+  },
   -- Lazygit integration
   {
     'kdheepak/lazygit.nvim',
