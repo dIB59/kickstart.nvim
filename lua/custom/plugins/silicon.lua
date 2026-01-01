@@ -9,6 +9,5 @@ return {
       return args.line1
     end,
     to_clipboard = true,
-    theme = 'tokyonight',
   },
 }
