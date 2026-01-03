@@ -20,7 +20,7 @@ return {
           { icon = '󰒲 ', key = 'S', desc = 'Status', action = ':Lazy' },
           { icon = '󱎫 ', key = 'm', desc = 'Typr Stats', action = ':TyprStats' },
           { icon = '󰀚 ', key = 'P', desc = 'Triforce Profile', action = ':Triforce profile' }, -- Use 'p' for project search since it's not a vertical motion
-          { icon = ' ', key = 'f', desc = 'Find Project', action = ':lua Snacks.picker.projects()' },
+          { icon = ' ', key = 'F', desc = 'Find Project', action = ':lua Snacks.picker.projects()' },
           { icon = ' ', key = 'Q', desc = 'Quit', action = ':qa' },
         },
       },
