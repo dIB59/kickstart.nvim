@@ -11,7 +11,7 @@ return {
     sections = {
       lualine_a = { 'mode' },
       lualine_b = { 'branch', 'diff' },
-      lualine_c = { 'filename' },
+      lualine_c = { { 'filename', path = 1 } },
       lualine_x = { 'filetype' }, -- Only shows if there are errors
       lualine_y = { 'diagnostics' },
       lualine_z = { 'location' },
