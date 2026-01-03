@@ -18,7 +18,7 @@ return {
           { icon = '󰛄 ', key = 'L', desc = 'LeetCode', action = ':Leet' },
           { icon = '󰌌 ', key = 'T', desc = 'Typr', action = ':Typr' },
           { icon = '󰒲 ', key = 'S', desc = 'Status', action = ':Lazy' },
-          { icon = '󱎫 ', key = 'T', desc = 'Typr Stats', action = ':TyprStats' },
+          { icon = '󱎫 ', key = 'm', desc = 'Typr Stats', action = ':TyprStats' },
           { icon = ' ', key = 'Q', desc = 'Quit', action = ':qa' },
           -- Use 'p' for project search since it's not a vertical motion
           { icon = ' ', key = 'f', desc = 'Find Project', action = ':lua Snacks.picker.projects()' },
