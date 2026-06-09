@@ -93,6 +93,44 @@ vim.g.maplocalleader = ' '
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = false
 
+-- [[ Keep the LSP log from growing without bound ]]
+--  Some servers (e.g. rust-analyzer) can flood stderr with repeated warnings,
+--  and Neovim logs *all* server stderr at ERROR level, so the log can balloon
+--  to gigabytes within a single session. We can't filter those out by log level
+--  (short of disabling logging entirely), so instead we periodically trim the
+--  log back to its most recent lines. The server opens the log in append mode,
+--  so truncating it underneath is safe.
+do
+  local uv = vim.uv or vim.loop
+  local log_path = vim.lsp.get_log_path()
+  local max_bytes = 50 * 1024 * 1024 -- trim once the log passes 50 MB
+  local keep_bytes = 5 * 1024 * 1024 -- keep roughly the most recent 5 MB
+
+  local function trim_lsp_log()
+    local stat = uv.fs_stat(log_path)
+    if not stat or stat.size <= max_bytes then
+      return
+    end
+    local fd = uv.fs_open(log_path, 'r', 420)
+    if not fd then
+      return
+    end
+    local data = uv.fs_read(fd, keep_bytes, stat.size - keep_bytes) or ''
+    uv.fs_close(fd)
+    -- Drop the partial first line so the trimmed file starts cleanly.
+    data = data:gsub('^[^\n]*\n', '')
+    local out = uv.fs_open(log_path, 'w', 420)
+    if out then
+      uv.fs_write(out, data)
+      uv.fs_close(out)
+    end
+  end
+
+  -- Check shortly after startup, then every 5 minutes.
+  local timer = assert(uv.new_timer())
+  timer:start(10000, 5 * 60 * 1000, vim.schedule_wrap(trim_lsp_log))
+end
+
 -- [[ Setting options ]]
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
