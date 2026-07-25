@@ -732,7 +732,22 @@ require('lazy').setup({
         -- clangd = {},
         -- gopls = {},
         -- pyright = {},
-        -- rust_analyzer = {},
+        rust_analyzer = {
+          settings = {
+            ['rust-analyzer'] = {
+              -- The #[hot] macro from bevy_simple_subsecond_system uses span APIs
+              -- rust-analyzer can't expand, painting whole functions red. Skip it.
+              procMacro = {
+                ignored = {
+                  bevy_simple_subsecond_system_macros = { 'hot' },
+                },
+              },
+              diagnostics = {
+                disabled = { 'proc-macro-disabled' },
+              },
+            },
+          },
+        },
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
